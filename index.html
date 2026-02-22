@@ -1,76 +1,40 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BellaNatureLuxe</title>
-<link rel="manifest" href="manifest.json">
-<style>
-body { font-family: 'Montserrat', sans-serif; margin:0; background:#fff; color:#000; }
-header { background:#000; color:#FFD700; padding:20px; text-align:center; font-size:28px; font-weight:bold; }
-.hero { text-align:center; padding:40px 20px; background:#f9f9f9; }
-.hero h2 { font-size:22px; margin-bottom:20px; }
-.products { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
-.product-card { border:1px solid #ddd; border-radius:12px; width:280px; padding:15px; text-align:center; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
-.product-card img { width:100%; height:200px; object-fit:cover; border-radius:8px; }
-.product-card h3 { font-size:18px; margin:10px 0; color:#000; }
-.product-card p { font-size:14px; color:#333; }
-.product-card .price { font-size:16px; font-weight:bold; margin:10px 0; color:#FFD700; }
-.product-card button { background:#FFD700; border:none; color:#000; padding:10px 15px; border-radius:8px; font-size:16px; cursor:pointer; width:100%; font-weight:bold; }
-.product-card button:hover { background:#e6c200; }
-footer { text-align:center; padding:20px; background:#000; color:#FFD700; }
-</style>
-</head>
-<body>
-
-<header>BellaNatureLuxe</header>
-
-<section class="hero">
-<h2>Glow Up Express – 7 jours pour un ventre plat & peau nette</h2>
-<button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Découvrir les produits</button>
-</section>
-
-<section class="products" id="products">
-
-<div class="product-card">
-<img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80" alt="Glow Up Express">
-<h3>Glow Up Express – 7 jours</h3>
-<p>Programme complet pour ventre plat et peau nette</p>
-<div class="price">10 USD</div>
-<button onclick="contactWhatsApp('le Programme Glow Up Express (10 USD)')">Commander sur WhatsApp</button>
-</div>
-
-<div class="product-card">
-<img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&q=80" alt="Crème Glow">
-<h3>Crème Glow BellaNatureLuxe</h3>
-<p>Crème naturelle pour visage radieux</p>
-<div class="price">15 USD</div>
-<button onclick="contactWhatsApp('la Crème Glow (15 USD)')">Commander sur WhatsApp</button>
-</div>
-
-<div class="product-card">
-<img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=400&q=80" alt="Cours Vidéo">
-<h3>Routine Fitness – Vidéo</h3>
-<p>Vidéo de 30 min pour ventre plat</p>
-<div class="price">8 USD</div>
-<button onclick="contactWhatsApp('la Routine Fitness Vidéo (8 USD)')">Commander sur WhatsApp</button>
-</div>
-
-</section>
-
-<footer>
-&copy; 2026 BellaNatureLuxe – Tous droits réservés
-<br><br>
-<button onclick="shareSocial()" style="background:none; color:#FFD700; border:1px solid #FFD700; padding:5px 10px; width:auto;">Partager le site</button>
-</footer>
-
 <script>
-// Liaison du Service Worker
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').then(() => console.log("Service Worker enregistré"));
+// Enregistrement du Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log("Service Worker enregistré"))
+    .catch(err => console.log("Erreur Service Worker :", err));
 }
 
-// Fonction de commande avec le lien HTTPS universel (le plus sûr)
-function contactWhatsApp(produit){
-  const numero = "243979293776"; 
-  const message = encodeURIComponent("Bonjour BellaNatureLuxe
+// Fonction de commande WhatsApp
+function contactWhatsApp(produit) {
+  const numero = "243979293776"; // ton numéro
+  const message = encodeURIComponent("Bonjour BellaNatureLuxe, je souhaite commander " + produit);
+
+  // Essaie d'ouvrir dans WhatsApp si dispo, sinon navigateur
+  const waUrl = "https://wa.me/" + numero + "?text=" + message;
+  window.location.href = waUrl; // force ouverture dans app si possible
+}
+
+// Fonction de partage social
+function shareSocial() {
+  if (navigator.share) {
+    // Mobile et navigateurs modernes
+    navigator.share({
+      title: 'BellaNatureLuxe',
+      text: 'Découvrez mes programmes Glow Up et produits naturels !',
+      url: window.location.href
+    })
+    .then(() => console.log('Partage réussi'))
+    .catch(err => console.log('Erreur partage :', err));
+  } else if (navigator.clipboard) {
+    // Copier le lien pour PC / anciens navigateurs
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => alert('Lien copié ! Partagez BellaNatureLuxe avec vos proches.'))
+      .catch(() => alert('Impossible de copier le lien. Copiez manuellement : ' + window.location.href));
+  } else {
+    // Dernier recours
+    alert('Partage non supporté. Copiez le lien manuellement : ' + window.location.href);
+  }
+}
+</script>
