@@ -65,35 +65,12 @@ footer { text-align:center; padding:20px; background:#000; color:#FFD700; }
 </footer>
 
 <script>
-// Liaison du Service Worker pour la PWA
+// Liaison du Service Worker
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').then(() => console.log("Service Worker enregistré"));
 }
 
+// Fonction de commande avec le lien HTTPS universel (le plus sûr)
 function contactWhatsApp(produit){
-  // Ton numéro est bien le 243979293776
   const numero = "243979293776"; 
-  const message = encodeURIComponent("Bonjour BellaNatureLuxe, je souhaite commander " + produit);
-  
-  // On utilise 'https://wa.me/' qui est plus fiable que 'whatsapp://'
-  window.open("https://wa.me/" + numero + "?text=" + message, "_blank");
-}
-
-}
-
-// Fonction de Partage
-function shareSocial(){
-  if(navigator.share){
-    navigator.share({
-      title: 'BellaNatureLuxe',
-      text: 'Découvrez mes programmes Glow Up et produits naturels !',
-      url: window.location.href
-    });
-  } else {
-    alert('Lien du site copié !');
-  }
-}
-</script>
-
-</body>
-</html>
+  const message = encodeURIComponent("Bonjour BellaNatureLuxe
