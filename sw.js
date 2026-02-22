@@ -1,0 +1,4 @@
+console.log("Le moteur de BellaNatureLuxe est prêt !");
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { self.clients.claim(); });
+self.addEventListener('fetch', e => {});
